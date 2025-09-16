@@ -10,8 +10,6 @@ const JINA_API_KEY = process.env.JINA_API_KEY;
 
 // Function to generate embedding using Jina
 export async function generateEmbedding(text) {
-  console.log("Generating embedding for query:", text); // <-- Add this
-
   if (!JINA_API_KEY) {
     console.error("Error generating embedding: JINA_API_KEY is not set");
     return null;
@@ -41,7 +39,6 @@ export async function generateEmbedding(text) {
       return null;
     }
 
-    console.log("Embedding length:", embedding.length); // Check size of vector
     return embedding;
   } catch (err) {
     const message = err?.response?.data || err.message;
@@ -57,7 +54,7 @@ export async function ingestNewsEmbeddings() {
 
   for (let i = 0; i < newsData.length; i++) {
     const article = newsData[i];
-    const textToEmbed = article.content;
+    const textToEmbed = article.text;
 
     console.log(
       `Embedding article ${i + 1}/${newsData.length}: ${article.title}`

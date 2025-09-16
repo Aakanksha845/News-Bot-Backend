@@ -7,15 +7,9 @@ async function createCollection() {
   try {
     const collections = await qdrant.getCollections();
 
-    // checking the dimension of the embedding so that the upsert will not fail due to mismatch in the dimension
-    const sampleEmbedding = await generateEmbedding("dimension probe");
-    const dimension = Array.isArray(sampleEmbedding)
-      ? sampleEmbedding.length
-      : 1536; // fallback to common size if probing fails so that the common size will be used to create the collection
-
     await qdrant.createCollection(COLLECTION_NAME, {
       vectors: {
-        size: dimension,
+        size: 1024,
         distance: "Cosine",
       },
     });

@@ -4,8 +4,9 @@ import { generateEmbedding } from "../utils/ingestEmbeddings.js";
 
 const COLLECTION_NAME = "news_articles";
 
-export async function getRagAnswer(query, topK = 50) {
+export async function getRagAnswer(query, topK = 10) {
   const queryVector = await generateEmbedding(query);
+  console.log(queryVector, "this is the query vector");
   if (!queryVector) {
     return "Error: Could not generate embedding for the query.";
   }
