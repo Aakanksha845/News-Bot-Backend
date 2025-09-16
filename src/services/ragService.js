@@ -4,7 +4,7 @@ import { generateEmbedding } from "../utils/ingestEmbeddings.js";
 
 const COLLECTION_NAME = "news_articles";
 
-export async function getRagAnswer(query, topK = 5) {
+export async function getRagAnswer(query, topK = 50) {
   const queryVector = await generateEmbedding(query);
   if (!queryVector) {
     return "Error: Could not generate embedding for the query.";
@@ -20,10 +20,10 @@ export async function getRagAnswer(query, topK = 5) {
   }
 
   const context = searchResults
-    .map(
-      (res, idx) => `${idx + 1}. ${res.payload.title} - ${res.payload.content}`
-    )
-    .join("\n");
+    .map((res, idx) => `${idx + 1}. ${res.payload.title} - ${res.payload.text}`)
+    .join("\n\n");
+
+  console.log("Context being passed to Gemini:\n", context);
 
   const answer = await askGemini(query, context);
   return answer;
