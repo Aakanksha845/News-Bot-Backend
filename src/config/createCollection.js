@@ -7,7 +7,6 @@ async function createCollection() {
   try {
     const collections = await qdrant.getCollections();
 
-    // Determine embedding dimension dynamically to ensure correctness
     // checking the dimension of the embedding so that the upsert will not fail due to mismatch in the dimension
     const sampleEmbedding = await generateEmbedding("dimension probe");
     const dimension = Array.isArray(sampleEmbedding)
