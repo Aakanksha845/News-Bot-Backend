@@ -3,8 +3,8 @@ import fs from "fs";
 
 async function main() {
   const RSS_FEEDS = [
-    "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
     "https://feeds.bbci.co.uk/news/world/rss.xml",
+    "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml",
   ];
 
   const MAX_ARTICLES = 50;
