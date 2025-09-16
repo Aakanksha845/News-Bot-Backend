@@ -10,13 +10,14 @@ const JINA_API_KEY = process.env.JINA_API_KEY;
 
 // Function to generate embedding using Jina
 export async function generateEmbedding(text) {
+  console.log("Generating embedding for query:", text); // <-- Add this
+
   if (!JINA_API_KEY) {
     console.error("Error generating embedding: JINA_API_KEY is not set");
     return null;
   }
 
   try {
-    // Basic guard against extremely long inputs which some providers reject
     const input = typeof text === "string" ? text.slice(0, 10000) : "";
 
     const response = await axios.post(
@@ -34,10 +35,13 @@ export async function generateEmbedding(text) {
     );
 
     const embedding = response?.data?.data?.[0]?.embedding;
+
     if (!embedding) {
       console.error("Error generating embedding: Empty embedding response");
       return null;
     }
+
+    console.log("Embedding length:", embedding.length); // Check size of vector
     return embedding;
   } catch (err) {
     const message = err?.response?.data || err.message;
@@ -48,7 +52,7 @@ export async function generateEmbedding(text) {
 
 // function to ingest embeddings
 export async function ingestNewsEmbeddings() {
-  const newsData = JSON.parse(fs.readFileSync("news.json", "utf-8"));
+  const newsData = JSON.parse(fs.readFileSync("news_chunks.json", "utf-8"));
   const points = [];
 
   for (let i = 0; i < newsData.length; i++) {
