@@ -7,8 +7,6 @@ import chatRoutes from "./routes/chat.js";
 const app = express();
 app.set("etag", false);
 app.use(bodyParser.json());
-import cors from "cors";
-
 // Add this before your routes
 const allowedOrigins = [
   "http://localhost:5173", // local dev frontend
