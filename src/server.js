@@ -9,13 +9,21 @@ app.set("etag", false);
 app.use(bodyParser.json());
 
 const allowedOrigins = [
-  "http://localhost:5173", // local dev frontend
+  "http://localhost:5173", // local dev
   process.env.FRONTEND_URL, // deployed frontend
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow server-to-server requests
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.log("Blocked by CORS:", origin);
+        return callback(new Error("CORS not allowed"), false);
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
