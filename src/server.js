@@ -6,8 +6,14 @@ import chatRoutes from "./routes/chat.js";
 
 const app = express();
 app.set("etag", false);
-app.use(cors());
 app.use(bodyParser.json());
+app.use(
+  cors({
+    origin: "*", // or specify your frontend URL once deployed
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // Disable caching for API responses
 app.use((req, res, next) => {
@@ -17,7 +23,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Simple request logging middleware (no emojis)
+// Simple request logging middleware
 app.use((req, res, next) => {
   const startedAt = Date.now();
   const safeStringify = (value) => {
