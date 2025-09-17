@@ -7,10 +7,18 @@ import chatRoutes from "./routes/chat.js";
 const app = express();
 app.set("etag", false);
 app.use(bodyParser.json());
+import cors from "cors";
+
+// Add this before your routes
+const allowedOrigins = [
+  "http://localhost:5173", // local dev frontend
+  "https://your-frontend-app.onrender.com", // deployed frontend
+];
+
 app.use(
   cors({
-    origin: "*", // or specify your frontend URL once deployed
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
